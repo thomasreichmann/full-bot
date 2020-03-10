@@ -1,0 +1,19 @@
+{
+  "name": "full-bot",
+  "version": "1.0.0",
+  "description": "Bot do discord primariamente focado em musica, com desenvolvimento em twitch.tv/thomasar",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasreichmann/full-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thomasreichmann/full-bot/issues"
+  },
+  "homepage": "https://github.com/thomasreichmann/full-bot#readme"
+}

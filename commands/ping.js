@@ -7,7 +7,3 @@ exports.run = ( /** @type {Discord.Client} */ client, /** @type {Discord.Message
         message.reply(`Pong! ${(message.createdAt.valueOf() + (delay * 2)) - new Date().valueOf()}ms`)
     }, delay)
 }
-
-function checkNull(element, value) {
-    return element != undefined ? element : value
-}

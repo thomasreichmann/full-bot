@@ -1,7 +1,6 @@
 module.exports = class Queue {
     checkNull(element, value) {
-        element = element != undefined ? element : value
-        return element
+        return element != undefined ? element : value
     }
 
     random(min, max) { // Random com range entre numeros

@@ -34,7 +34,7 @@ module.exports = class InputHandler {
             try {
                 let data = await (await ytsr(input)).items[0]
 
-                info.push(new Song(data.title, data.link))
+                info.push(new Song(data.link, data.title))
             } catch (err) {
                 console.error(err)
             }

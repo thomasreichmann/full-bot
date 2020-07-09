@@ -36,7 +36,7 @@ module.exports = class Queue {
     }
 
     addSong(video) {
-        this.songs.push(video.url)
+        this.songs.push(video)
         console.log(`Video: ${video.title} URL: ${video.url} adicionada na queue`)
 
 
@@ -44,7 +44,7 @@ module.exports = class Queue {
     }
 
     async play() {
-        this.dispatcher = this.connection.play(await ytdl(this.songs[0]), {
+        this.dispatcher = this.connection.play(await ytdl(this.songs[0].url), {
             type: 'opus'
         })
 

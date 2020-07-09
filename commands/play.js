@@ -2,14 +2,17 @@ const Discord = require('discord.js')
 const ytdl = require('ytdl-core-discord');
 
 const Queue = require(`../classes/queue`)
+const InputHandler = require(`../classes/inputhandler`)
 
 exports.run = async ( /** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) => {
     let channel = message.channel
     let voice = message.member.voice
     if (!voice.channel) return channel.send(`Voce nao esta conectado em um canal de voz`)
 
-    let url = args[0]
-    if (!url) return channel.send(`Especifique uma url para ser tocada`)
+    let input = args[0]
+    if (!input) return channel.send(`Especifique uma url para ser tocada`)
+
+    let inputHandler = new InputHandler()
 
     let guild = message.guild
     /** @type {Queue} */
@@ -17,14 +20,14 @@ exports.run = async ( /** @type {Discord.Client} */ client, /** @type {Discord.M
 
     voice.channel.join()
         .then(connection => {
-            // console.log(`Comecando a tocar a url: ${url}`)
-            // play(connection, url)
 
             if (!queue) {
                 client.queues[guild.id] = queue = new Queue(client, guild, connection, channel)
             }
-
-            queue.addSong(url)
+            inputHandler.parse(input)
+                .then(videos => videos.forEach(video => {
+                    queue.addSong(video)
+                }))
         })
         .catch(err => {
             message.channel.send(`Erro ao entrar no canal de voz.`)

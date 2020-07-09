@@ -31,9 +31,13 @@ module.exports = class Queue {
         this.client.queues[this.guild.id] = undefined
     }
 
-    addSong(url) {
-        this.songs.push(url)
-        console.log(`URL: ${url} adicionada na queue`)
+    skip() {
+        this.dispatcher.end()
+    }
+
+    addSong(video) {
+        this.songs.push(video.url)
+        console.log(`Video: ${video.title} URL: ${video.url} adicionada na queue`)
 
 
         if (!this.playing) this.play()
@@ -53,6 +57,7 @@ module.exports = class Queue {
                 this.play()
             } else {
                 this.playing = false;
+                this.end()
             }
         })
 

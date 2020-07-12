@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const ytdl = require('ytdl-core-discord');
 
 const Queue = require(`../classes/queue`)
-const InputHandler = require(`../classes/inputhandler`)
+const InputHandler = require(`../classes/inputHandler`)
 
 exports.run = async ( /** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) => {
     let channel = message.channel

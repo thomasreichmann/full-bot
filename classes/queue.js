@@ -16,9 +16,7 @@ module.exports = class Queue {
 
         /**@type {Discord.StreamDispatcher} */
         this.dispatcher;
-
-        // this.loop = false;
-        // this.qloop = false;
+        
         this.playing = false;
     }
 
@@ -38,7 +36,6 @@ module.exports = class Queue {
     addSong(video) {
         this.songs.push(video)
         console.log(`Video: ${video.title} URL: ${video.url} adicionada na queue`)
-
 
         if (!this.playing) this.play()
     }

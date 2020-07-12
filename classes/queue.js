@@ -16,7 +16,7 @@ module.exports = class Queue {
 
         /**@type {Discord.StreamDispatcher} */
         this.dispatcher;
-        
+
         this.playing = false;
     }
 
@@ -35,7 +35,7 @@ module.exports = class Queue {
 
     addSong(video) {
         this.songs.push(video)
-        console.log(`Video: ${video.title} URL: ${video.url} adicionada na queue`)
+        console.log(`Video adicionado: "${video.title}"\n Length: "${video.length}"\n URL: "${video.url}"\n Guild: "${this.guild.name}" ID: "${this.guild.id}"\n`)
 
         if (!this.playing) this.play()
     }
@@ -48,8 +48,10 @@ module.exports = class Queue {
         this.playing = true
 
         this.dispatcher.on(`finish`, () => {
-            let url = this.songs.shift()
-            console.log(`URL ${url} foi removida da queue`)
+            let video = this.songs.shift()
+
+            // Console.log longo para debug
+            console.log(`Video removido: "${video.title}"\n URL: "${video.url}"\n Guild: "${this.guild.name}" ID: "${this.guild.id}"\n`)
             if(this.songs.length > 0) {
                 this.play()
             } else {

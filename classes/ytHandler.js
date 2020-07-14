@@ -18,7 +18,19 @@ module.exports = class ytHandler {
 
     async getSearch(query) {
         try {
-            let result = (await ytsr(query)).items[0]
+            let results = (await ytsr(query)).items
+
+            let i = 0;
+
+            let result = results[i]
+            // Caso o primeiro resultado nao for um video, checamos todos os resultados disponiveis ate achar o primeiro video
+            while(result.type != `video`) {
+                i++
+
+                if(i > results.length - 1) throw `Erro, nenhum video foi encontrado a partir da query: ${query}`;
+
+                result = results[i];
+            }
 
             let videos = [new Song(result.link, result.title, result.duration)]
 

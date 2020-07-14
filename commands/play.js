@@ -19,15 +19,23 @@ exports.run = async ( /** @type {Discord.Client} */ client, /** @type {Discord.M
     let queue = client.queues[guild.id]
 
     voice.channel.join()
-        .then(connection => {
+        .then(async connection => {
 
             if (!queue) {
                 client.queues[guild.id] = queue = new Queue(client, guild, connection, channel)
             }
-            inputHandler.parse(input)
-                .then(videos => videos.forEach(video => {
+
+            let videos = await inputHandler.parse(input)
+
+            if (videos) {
+                videos.forEach(video => {
                     queue.addSong(video)
-                }))
+                });
+            } else {
+                connection.disconnect()
+
+                channel.send(`Erro ao achar videos com o input dado.`)
+            }
         })
         .catch(err => {
             message.channel.send(`Erro ao entrar no canal de voz.`)

@@ -24,12 +24,11 @@ module.exports = class SpotifyHandler {
 
             if (type === `track`) {
                 return await this.getTrack(id)
-            } else if (type === `playlist`) {
-                return await this.getPlaylist(id)
+            } else if (type === `playlist` || type === `album`) {
+                return await this.getPlaylistAlbum(id, type)
             } else {
-
+                throw `Spotify Handler Error: Type not supported`
             }
-
         } catch (error) {
             console.log(error)
         }
@@ -70,8 +69,24 @@ module.exports = class SpotifyHandler {
         }
     }
 
-    getAlbum() {
+    async getAlbum(id) {
+        try {
+            let data = await spotify.getAlbum(id)
+            let queries = []
 
+            data.body.tracks.items.forEach(t => {
+                let track = t
+
+                let title = track.name;
+                let artist = track.artists[0].name
+
+                queries.push(`${artist} ${title}`)
+            })
+
+            return await this.searchTracks(queries)
+        } catch (err) {
+            console.error(`Erro getPlaylist spHandler:\n${err}`)
+        }
     }
 
     async searchTracks(queries) {

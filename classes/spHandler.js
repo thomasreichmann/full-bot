@@ -46,7 +46,7 @@ module.exports = class SpotifyHandler {
 
             return await ytHandler.getSearch(query)
         } catch (err) {
-            console.erro(`Erro getTrack spHandler:\n${err}`)
+            console.error(`Erro getTrack spHandler:\n${err}`)
         }
     }
 

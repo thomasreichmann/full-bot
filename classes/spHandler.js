@@ -61,7 +61,7 @@ module.exports = class SpotifyHandler {
             let queries = []
 
             data.body.tracks.items.forEach(t => {
-                let track = t.track ? t.track : track;
+                let track = t.track ? t.track : t;
 
                 let title = track.name;
                 let artist = track.artists[0].name

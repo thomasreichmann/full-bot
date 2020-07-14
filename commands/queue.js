@@ -28,21 +28,12 @@ exports.run = ( /** @type {Discord.Client} */ client, /** @type {Discord.Message
         if (i >= s + 9) break;
     }
 
-    message.channel.send({
-            "embed": {
-                "color": 7536755,
-                "author": {
-                    "name": `Queue | ${guild.name}`,
-                    "icon_url": `${guild.iconURL({dynamic: true})}`
-                },
-                "fields": [{
-                    "name": ".",
-                    "value": `${response}\n`
-                }],
-                "footer": {
-                    "text": `Pagina ${page}/${pages}`
-                }
-            }
-        })
+    let embed = new Discord.MessageEmbed()
+        .setColor(`87148C`)
+        .setAuthor(`Queue | ${guild.name}`, guild.iconURL({dynamic: true}))
+        .setDescription(response)
+        .setFooter(`Pagina ${page}/${pages}`)
+    
+    message.channel.send(embed)
         .catch(err => console.log(`Queue error on Rich Embed send:\n${err}`))
 }

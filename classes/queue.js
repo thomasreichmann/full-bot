@@ -24,13 +24,13 @@ module.exports = class Queue {
         console.log(`Finalizando queue no servidor: "${this.guild.name}" | "${this.guild.id}"`)
         this.playing = false;
         this.songs = undefined;
-        if (this.dispatcher) this.dispatcher.destroy();
+        if (this.dispatcher) this.dispatcher.end();
         this.connection.disconnect();
         this.client.queues[this.guild.id] = undefined;
     }
 
     skip() {
-        this.dispatcher.end()
+        if (this.dispatcher) return this.dispatcher.end()
     }
 
     addSong(video) {
@@ -50,27 +50,35 @@ module.exports = class Queue {
             })
         } catch (err) {
             console.error(err)
+
+            // Caso o ytdl tenha retornado um erro, nao teremos um dispatcher, se ainda existem musicas na queue,
+            // pulamos a musica que causou o erro e continuamos
+            if (this.songs.length > 1) {
+                this.songs.shift()
+                this.play()
+            } else {
+                this.end()
+            }
         }
 
         this.playing = true
 
         this.dispatcher.on(`finish`, (reason) => {
-            console.log(`Reason: ${reason}`)
+                console.log(`Reason: ${reason}`)
 
-            let video = this.songs.shift()
+                let video = this.songs.shift()
 
-            // Console.log longo para debug
-            console.log(`Video removido: "${video.title}"\n URL: "${video.url}"\n Guild: "${this.guild.name}" ID: "${this.guild.id}"\n`)
-            if (this.songs.length > 0) {
-                this.play()
-            } else {
-                this.playing = false;
-                this.end()
-            }
-        })
-
-        this.dispatcher.on(`error`, (err) => {
-            console.log(`Erro dispatcher error event:\n${err}`)
-        })
+                // Console.log longo para debug
+                console.log(`Video removido: "${video.title}"\n URL: "${video.url}"\n Guild: "${this.guild.name}" ID: "${this.guild.id}"\n`)
+                if (this.songs.length > 0) {
+                    this.play()
+                } else {
+                    this.playing = false;
+                    this.end()
+                }
+            })
+            .on(`error`, (err) => {
+                console.log(`Erro dispatcher error event:\n${err}`)
+            })
     }
 }

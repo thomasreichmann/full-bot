@@ -49,13 +49,19 @@ module.exports = class SpotifyHandler {
         }
     }
 
-    async getPlaylist(id) {
+    async getPlaylistAlbum(id, type) {
         try {
-            let data = await spotify.getPlaylist(id)
+            let data;
+            if(type === `playlist`) {
+                data = await spotify.getPlaylist(id)
+            } else {
+                data = await spotify.getAlbum(id)
+            }
+
             let queries = []
 
             data.body.tracks.items.forEach(t => {
-                let track = t.track
+                let track = t.track ? t.track : track;
 
                 let title = track.name;
                 let artist = track.artists[0].name
@@ -65,27 +71,7 @@ module.exports = class SpotifyHandler {
 
             return await this.searchTracks(queries)
         } catch (err) {
-            console.error(`Erro getPlaylist spHandler:\n${err}`)
-        }
-    }
-
-    async getAlbum(id) {
-        try {
-            let data = await spotify.getAlbum(id)
-            let queries = []
-
-            data.body.tracks.items.forEach(t => {
-                let track = t
-
-                let title = track.name;
-                let artist = track.artists[0].name
-
-                queries.push(`${artist} ${title}`)
-            })
-
-            return await this.searchTracks(queries)
-        } catch (err) {
-            console.error(`Erro getPlaylist spHandler:\n${err}`)
+            console.error(`Erro getPlaylistAlbum spHandler:\n${err}`)
         }
     }
 

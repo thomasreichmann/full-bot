@@ -29,8 +29,8 @@ module.exports = class SpotifyHandler {
             } else {
                 throw `Spotify Handler Error: Type not supported`
             }
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            throw `spHandler url: ${url}\nerror: ${err}`
         }
     }
 
@@ -45,7 +45,7 @@ module.exports = class SpotifyHandler {
 
             return await ytHandler.getSearch(query)
         } catch (err) {
-            console.error(`Erro getTrack spHandler:\n${err}`)
+            throw `Erro getTrack spHandler:\n${err}`;
         }
     }
 
@@ -71,7 +71,7 @@ module.exports = class SpotifyHandler {
 
             return await this.searchTracks(queries)
         } catch (err) {
-            console.error(`Erro getPlaylistAlbum spHandler:\n${err}`)
+            throw `Erro getPlaylistAlbum spHandler:\n${err}`;
         }
     }
 

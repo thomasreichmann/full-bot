@@ -25,16 +25,20 @@ exports.run = async ( /** @type {Discord.Client} */ client, /** @type {Discord.M
                 client.queues[guild.id] = queue = new Queue(client, guild, connection, channel)
             }
 
-            let videos = await inputHandler.parse(input)
+            try {
+                let videos = await inputHandler.parse(input)
 
-            if (videos) {
-                videos.forEach(video => {
-                    queue.addSong(video)
-                });
-            } else {
-                connection.disconnect()
-
-                channel.send(`Erro ao achar videos com o input dado.`)
+                if (videos) {
+                    videos.forEach(video => {
+                        queue.addSong(video)
+                    });
+                } else {
+                    connection.disconnect()
+    
+                    channel.send(`Erro ao achar videos com o input dado.`)
+                }
+            } catch (err) {
+                throw `Erro com play.js:\n${err}`
             }
         })
         .catch(err => {

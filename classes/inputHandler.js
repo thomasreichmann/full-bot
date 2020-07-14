@@ -15,20 +15,20 @@ module.exports = class InputHandler {
             try {
                 return await yt.parseUrl(input)
             } catch (err) {
-                console.error(`Erro com ytHandler parse:\n${err}`)
+                throw `Erro com ytHandler parse:\n${err}`;
             }
         } else if (service === `open`) {
             try {
                 return await sp.parseUrl(input)
             } catch (err) {
-                console.error(`Erro com spHandler parse:\n${err}`)
+                throw `Erro com spHandler parse:\n${err}`;
             }
         } else {
             // Nao achamos o dominio logo eh uma pesquisa
             try {
                 return await yt.getSearch(input)
             } catch (err) {
-                console.error(`Erro com ytHandler search:\n${err}`)
+                throw `Erro com ytHandler search:\n${err}`;
             }
         }
     }

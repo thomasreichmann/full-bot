@@ -1,6 +1,9 @@
 const YtHandler = require(`./ytHandler`)
 let yt = new YtHandler();
 
+const SpotifyHandler = require(`./spHandler`)
+let sp = new SpotifyHandler()
+
 module.exports = class InputHandler {
     async parse(input) {
         // Input pode ser: Video yt, Playlist yt, Termo de pesq., Track spotf, Album spotf, Playlist spotf.
@@ -15,7 +18,11 @@ module.exports = class InputHandler {
                 console.error(`Erro com ytHandler parse:\n${err}`)
             }
         } else if (service === `open`) {
-            return null;
+            try {
+                return await sp.parseUrl(input)
+            } catch (err) {
+                console.error(`Erro com spHandler parse:\n${err}`)
+            }
         } else {
             // Nao achamos o dominio logo eh uma pesquisa
             try {

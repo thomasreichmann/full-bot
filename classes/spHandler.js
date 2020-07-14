@@ -15,19 +15,23 @@ module.exports = class SpotifyHandler {
         try {
             await this.setToken()
 
-            let index = url.search(/(playlist|track|album)/)
+            let index = url.search(/(playlist|track|album|artist)/)
             let parsed = url.substr(index).split("/")
             // Define se temos um playlist|track|album
             let type = parsed[0]
             // Define o id da playlist|track|album
-            let id = parsed[1]
+            let id = parsed[1].split(`?`)[0]
+
+            console.log(id)
 
             if (type === `track`) {
                 return await this.getTrack(id)
             } else if (type === `playlist` || type === `album`) {
                 return await this.getPlaylistAlbum(id, type)
+            } else if (type === `artist`) {
+                return await this.getArtist(id)
             } else {
-                throw `Spotify Handler Error: Type not supported`
+                throw `Spotify Handler Error: Type not supported: ${type}`
             }
         } catch (err) {
             throw `spHandler url: ${url}\nerror: ${err}`
@@ -52,7 +56,7 @@ module.exports = class SpotifyHandler {
     async getPlaylistAlbum(id, type) {
         try {
             let data;
-            if(type === `playlist`) {
+            if (type === `playlist`) {
                 data = await spotify.getPlaylist(id)
             } else {
                 data = await spotify.getAlbum(id)
@@ -72,6 +76,25 @@ module.exports = class SpotifyHandler {
             return await this.searchTracks(queries)
         } catch (err) {
             throw `Erro getPlaylistAlbum spHandler:\n${err}`;
+        }
+    }
+
+    async getArtist(id) {
+        try {
+            let data = await spotify.getArtistTopTracks(id, `US`)
+
+            let queries = [];
+
+            data.body.tracks.forEach(track => {
+                let title = track.name;
+                let artist = track.artists[0].name
+
+                queries.push(`${artist} ${title}`)
+            })
+
+            return await this.searchTracks(queries)
+        } catch (err) {
+            throw `Erro getArtist id: ${id} spHandler:\n${err}`;
         }
     }
 

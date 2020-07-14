@@ -23,8 +23,8 @@ module.exports = class Queue {
     end() {
         console.log(`Finalizando queue no servidor: "${this.guild.name}" | "${this.guild.id}"`)
         this.playing = false;
+        if (this.dispatcher) this.dispatcher.destroy();
         this.songs = undefined;
-        if (this.dispatcher) this.dispatcher.end();
         this.connection.disconnect();
         this.client.queues[this.guild.id] = undefined;
     }

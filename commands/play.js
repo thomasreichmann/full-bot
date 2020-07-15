@@ -26,16 +26,30 @@ exports.run = async ( /** @type {Discord.Client} */ client, /** @type {Discord.M
         }
 
         try {
+            let embed = new Discord.MessageEmbed()
+            .setColor(`87148C`)
+            .setDescription(`Carregando musicas... \nIsso pode demorar um pouco`)
+
+            let loadingMessage = await channel.send(embed)
+
             let videos = await inputHandler.parse(input)
 
             if (videos) {
                 videos.forEach(video => {
                     queue.addSong(video)
                 });
+
+                loadingMessage.delete()
+
+                let embed = new Discord.MessageEmbed()
+                .setColor(`87148C`)
+                .setDescription(`**${videos.length}** videos adicionados na queue`)
+
+                channel.send(embed)
             } else {
                 connection.disconnect()
 
-                channel.send(`Erro ao achar videos com o input dado.`)
+                return channel.send(`Erro ao achar videos com o input dado.`);
             }
         } catch (err) {
             console.error(`Erro com play.js:\n${err}`)

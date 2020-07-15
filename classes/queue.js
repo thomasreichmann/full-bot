@@ -63,9 +63,7 @@ module.exports = class Queue {
 
         this.playing = true
 
-        this.dispatcher.on(`finish`, (reason) => {
-                console.log(`Reason: ${reason}`)
-
+        this.dispatcher.on(`finish`, () => {
                 let video = this.songs.shift()
 
                 // Console.log longo para debug

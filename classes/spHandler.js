@@ -22,8 +22,6 @@ module.exports = class SpotifyHandler {
             // Define o id da playlist|track|album
             let id = parsed[1].split(`?`)[0]
 
-            console.log(id)
-
             if (type === `track`) {
                 return await this.getTrack(id)
             } else if (type === `playlist` || type === `album`) {

@@ -63,7 +63,7 @@ module.exports = class Queue {
 
             this.dispatcher = this.connection.play(await ytdl(song.url, {
                 filter: 'audioonly',
-                highWaterMark: 1 << 25
+                quality: 'lowest'
             }), {
                 type: 'opus'
             })

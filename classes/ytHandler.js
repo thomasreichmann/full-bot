@@ -44,11 +44,11 @@ module.exports = class ytHandler {
         let data;
 
         try {
-            data = await ytdl.getInfo(url)
+            data = await ytdl.getBasicInfo(url)
         } catch (err) {
             throw err;
         }
-
+        
         let videos = [new Song(data.video_url, data.title, parseTime(data.length_seconds))]
 
         return videos;

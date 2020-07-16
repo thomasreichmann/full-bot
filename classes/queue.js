@@ -17,12 +17,14 @@ module.exports = class Queue {
         /**@type {Discord.StreamDispatcher} */
         this.dispatcher;
 
+        this.npMessage;
         this.playing = false;
     }
 
     end() {
         console.log(`Finalizando queue no servidor: "${this.guild.name}" | "${this.guild.id}"`)
         this.playing = false;
+        if (this.npMessage) this.npMessage.delete()
         if (this.dispatcher) this.dispatcher.destroy();
         this.songs = undefined;
         this.connection.disconnect();
@@ -31,6 +33,20 @@ module.exports = class Queue {
 
     skip() {
         if (this.dispatcher) return this.dispatcher.end()
+    }
+
+    np() {
+        // Gera um message embed contendo a musica sendo tocada
+        let song = this.songs[0]
+        if (!song) return;
+
+        let streamTime = Math.floor(this.dispatcher.streamTime / 1000)
+
+        let embed = new Discord.MessageEmbed()
+            .setColor(`87148C`)
+            .setDescription(`**Tocando:**\n[[\`${parseTime(streamTime)}\`](${song.url})/[\`${song.length}\`](${song.url})]\n${song.title}`)
+
+        return embed;
     }
 
     addSong(video) {
@@ -42,12 +58,23 @@ module.exports = class Queue {
 
     async play() {
         try {
-            this.dispatcher = this.connection.play(await ytdl(this.songs[0].url, {
+            this.playing = true
+            let song = this.songs[0]
+
+            this.dispatcher = this.connection.play(await ytdl(song.url, {
                 filter: 'audioonly',
                 highWaterMark: 1 << 25
             }), {
                 type: 'opus'
             })
+
+            try {
+                if (this.npMessage) await this.npMessage.delete()
+            } catch (err) {
+                console.error(`Erro ao deletar npMessage:\n${err}`)
+            } finally {
+                this.npMessage = await this.channel.send(this.np())
+            }
         } catch (err) {
             console.error(err)
 
@@ -60,8 +87,6 @@ module.exports = class Queue {
                 this.end()
             }
         }
-
-        this.playing = true
 
         this.dispatcher.on(`finish`, () => {
                 let video = this.songs.shift()
@@ -79,4 +104,16 @@ module.exports = class Queue {
                 console.log(`Erro dispatcher error event:\n${err}`)
             })
     }
+}
+
+var parseTime = (secs) => {
+    var sec_num = parseInt(secs, 10)
+    var hours   = Math.floor(sec_num / 3600)
+    var minutes = Math.floor(sec_num / 60) % 60
+    var seconds = sec_num % 60
+
+    return [hours,minutes,seconds]
+        .map(v => v < 10 ? "0" + v : v)
+        .filter((v,i) => v !== "00" || i > 0)
+        .join(":")
 }

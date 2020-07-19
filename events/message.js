@@ -16,7 +16,7 @@ module.exports = (/** @type {Discord.Client} */ client, /** @type {Discord.Messa
 	const args = message.content.slice(prefix.length).trim().split(/ +/g);
 	const command = args.shift().toLowerCase();
 
-	const cmd = client.commands.get(command);
+	const cmd = client.commands.get(command) || client.commands.find(c => c.aliases && c.aliases.includes(command));
 
 	if (!cmd) return;
 	cmd.execute(client, message, args);

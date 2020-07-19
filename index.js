@@ -16,6 +16,11 @@ client.ghost = false;
 
 client.queues = {};
 
+client.config = require('./config.json');
+if(process.env.NODE_ENV != 'production') {
+	client.config.prefix = ',';
+}
+
 fs.readdir('./events', (err, files) => {
 	if (err) return console.log(`Erro ao carregar os arquivos de eventos\n${err}`);
 	files.forEach(file => {

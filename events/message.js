@@ -9,7 +9,7 @@ module.exports = (/** @type {Discord.Client} */ client, /** @type {Discord.Messa
 		message.delete().catch(err => console.log(err));
 	}
 
-	let prefix = '.';
+	let prefix = client.config.prefix;
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 

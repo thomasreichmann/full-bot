@@ -10,7 +10,6 @@ exports.run = ( /** @type {Discord.Client} */ client, /** @type {Discord.Message
         let m = await message.channel.send(`Pong! Calculando delay...`)
         let afterTime = m.createdTimestamp
 
-        let ms = afterTime - beforeTime
-        m.edit(`Pong! ${ms}ms`)
+        m.edit(`Pong! ${afterTime - beforeTime}ms`)
     }, delay)
 }

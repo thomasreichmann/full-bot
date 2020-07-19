@@ -9,7 +9,7 @@ exports.run = (/** @type {Discord.Client} */ client, /** @type {Discord.Message}
 	let amt = fn.checkNull(args[0], d);
 
 	if (isNaN(amt)) return message.reply('O Argumento precisa ser um numero');
-	if (d > 50) return message.reply(`Limite de tentativas: ${50}`);
+	if (d > 50) return message.reply(`Limite de tentativas: ${limit}`);
 
 	let voice = message.member.voice;
 

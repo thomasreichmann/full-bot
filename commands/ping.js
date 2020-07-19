@@ -4,8 +4,13 @@ const fn = new Functions()
 
 exports.run = ( /** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) => {
     let delay = fn.checkNull(args[0], 0)
+    let beforeTime = message.createdTimestamp
 
-    setTimeout(() => {
-        message.reply(`Pong! ${(message.createdAt.valueOf() + (delay * 2)) - new Date().valueOf()}ms`)
+    setTimeout(async () => {
+        let m = await message.channel.send(`Pong! Calculando delay...`)
+        let afterTime = m.createdTimestamp
+
+        let ms = afterTime - beforeTime
+        m.edit(`Pong! ${ms}ms`)
     }, delay)
 }

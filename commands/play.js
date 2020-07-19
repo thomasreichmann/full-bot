@@ -27,8 +27,8 @@ exports.run = async ( /** @type {Discord.Client} */ client, /** @type {Discord.M
 
         try {
             let embed = new Discord.MessageEmbed()
-            .setColor(`87148C`)
-            .setDescription(`Carregando musicas... \nIsso pode demorar um pouco`)
+                .setColor(`87148C`)
+                .setDescription(`Carregando musicas... \nIsso pode demorar um pouco`)
 
             let loadingMessage = await channel.send(embed)
 
@@ -42,8 +42,14 @@ exports.run = async ( /** @type {Discord.Client} */ client, /** @type {Discord.M
                 loadingMessage.delete()
 
                 let embed = new Discord.MessageEmbed()
-                .setColor(`87148C`)
-                .setDescription(`**${videos.length}** videos adicionados na queue`)
+                    .setColor(`87148C`)
+
+                if (videos.length > 1) {
+                    embed.setDescription(`**${videos.length}** videos adicionados na queue`)
+                } else {
+                    let song = videos[0]
+                    embed.setDescription(`**Video adicionado:**\n[[\`00:00\`](${song.url})/[\`${song.length}\`](${song.url})]\n${song.title}`)
+                }
 
                 channel.send(embed)
             } else {

@@ -19,5 +19,5 @@ module.exports = (/** @type {Discord.Client} */ client, /** @type {Discord.Messa
 	const cmd = client.commands.get(command);
 
 	if (!cmd) return;
-	cmd.run(client, message, args);
+	cmd.execute(client, message, args);
 };

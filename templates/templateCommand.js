@@ -1,5 +1,12 @@
 const Discord = require('discord.js');
 
-exports.run = (/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) => {
-	console.log('New Command!');
+module.exports = {
+	name: 'template',
+	description: 'template',
+	aliases: ['templete', 'templote'],
+	usage: 'template',
+	cooldown: 0,
+	execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {
+		message.channel.send('template');
+	},
 };

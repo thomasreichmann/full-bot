@@ -1,26 +1,23 @@
 const Discord = require('discord.js');
 
-exports.run = (/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) => {
-	let users = 0;
-	let guilds = 0;
+module.exports = {
+	name: 'stats',
+	description: 'Mostra as estatisticas do bot.',
+	usage: 'stats',
+	execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {
+		let users = 0;
+		let guilds = 0;
 
-	client.guilds.cache.forEach(guild => {
-		users += guild.memberCount;
-		guilds++;
-	});
+		client.guilds.cache.forEach(guild => {
+			users += guild.memberCount;
+			guilds++;
+		});
 
-	message.channel.send({
-		'embed': {
-			'color': 7536755,
-			'fields': [{
-				'name': 'Guilds 🗄️',
-				'value': guilds,
-			},
-			{
-				'name': 'Users 👥',
-				'value': users,
-			},
-			],
-		},
-	});
+		let embed = new Discord.MessageEmbed()
+			.addFields([
+				{ name: 'Guilds :file_cabinet:', value: guilds },
+				{ name: 'Users :busts_in_silhouette:', value: users }]);
+
+		message.channel.send(embed);
+	},
 };

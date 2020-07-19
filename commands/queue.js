@@ -1,39 +1,39 @@
-const Discord = require('discord.js')
+const Discord = require('discord.js');
 
-const Queue = require(`../classes/queue`)
+const Queue = require('../classes/queue');
 
-exports.run = ( /** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) => {
-    let guild = message.guild
-    /** @type {Queue} */
-    let queue = client.queues[guild.id]
+exports.run = (/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) => {
+	const guild = message.guild;
+	/** @type {Queue} */
+	const queue = client.queues[guild.id];
 
-    if (!queue) return;
+	if (!queue) return;
 
-    let page = args[0] ? args[0] : 1
+	const page = args[0] ? args[0] : 1;
 
-    let s = page > 1 ? (page - 1) * 10 : 0
-    let response = '';
+	const s = page > 1 ? (page - 1) * 10 : 0;
+	let response = '';
 
-    let pages = Math.floor(queue.songs.length / 10) + 1
+	let pages = Math.floor(queue.songs.length / 10) + 1;
 
-    // Provavel que exista uma maneira de fazer isso mais "bonitamente"
-    pages = pages ? pages : 1
+	// Provavel que exista uma maneira de fazer isso mais "bonitamente"
+	pages = pages ? pages : 1;
 
-    if (s > queue.songs.length - 1) return message.reply(`Essa pagina nao existe na queue`)
+	if (s > queue.songs.length - 1) return message.reply('Essa pagina nao existe na queue');
 
-    for (let i = s; i < queue.songs.length; i++) {
-        const song = queue.songs[i];
+	for (let i = s; i < queue.songs.length; i++) {
+		const song = queue.songs[i];
 
-        response += `**${i + 1}. ** [\`${song.length}\`](${song.url}) ${song.title} \n`
-        if (i >= s + 9) break;
-    }
+		response += `**${i + 1}. ** [\`${song.length}\`](${song.url}) ${song.title} \n`;
+		if (i >= s + 9) break;
+	}
 
-    let embed = new Discord.MessageEmbed()
-        .setColor(`87148C`)
-        .setAuthor(`Queue | ${guild.name}`, guild.iconURL({dynamic: true}))
-        .setDescription(response)
-        .setFooter(`Pagina ${page}/${pages}`)
-    
-    message.channel.send(embed)
-        .catch(err => console.log(`Queue error on Rich Embed send:\n${err}`))
-}
+	const embed = new Discord.MessageEmbed()
+		.setColor('87148C')
+		.setAuthor(`Queue | ${guild.name}`, guild.iconURL({ dynamic: true }))
+		.setDescription(response)
+		.setFooter(`Pagina ${page}/${pages}`);
+
+	message.channel.send(embed)
+		.catch(err => console.log(`Queue error on Rich Embed send:\n${err}`));
+};

@@ -1,86 +1,72 @@
 const ytdl = require('ytdl-core-discord');
-const ytpl = require(`ytpl`)
-const ytsr = require(`ytsr`)
+const ytpl = require('ytpl');
+const ytsr = require('ytsr');
 
-const Song = require(`./song`)
+const Song = require('./song');
 
 module.exports = class ytHandler {
-    async parseUrl(url) {
-        // Decide se a url e um video ou uma playlist, recebe o(s) video(s) e retorna
+	async parseUrl(url) {
+		// Decide se a url e um video ou uma playlist, recebe o(s) video(s) e retorna
 
-        // Caso nao for uma playlist vamos ter um erro, logo assumimos que seja um video
-        try {
-          return await this.getPlaylist(url)
-        } catch {
-            return await this.getVideo(url)
-        }
-    }
+		// Caso nao for uma playlist vamos ter um erro, logo assumimos que seja um video
+		try {
+			return await this.getPlaylist(url);
+		}
+		catch {
+			return await this.getVideo(url);
+		}
+	}
 
-    async getSearch(query) {
-        try {
-            let results = (await ytsr(query)).items
+	async getSearch(query) {
+		let results = (await ytsr(query)).items;
 
-            let i = 0;
+		let i = 0;
 
-            let result = results[i]
-            // Caso o primeiro resultado nao for um video, checamos todos os resultados disponiveis ate achar o primeiro video
-            while(result.type != `video`) {
-                i++
+		let result = results[i];
+		// Caso o primeiro resultado nao for um video, checamos todos os resultados disponiveis ate achar o primeiro video
+		while(result.type != 'video') {
+			i++;
 
-                if(i > results.length - 1) throw `Erro, nenhum video foi encontrado a partir da query: ${query}`;
+			if(i > results.length - 1) throw `Erro, nenhum video foi encontrado a partir da query: ${query}`;
 
-                result = results[i];
-            }
+			result = results[i];
+		}
 
-            let videos = [new Song(result.link, result.title, result.duration)]
+		let videos = [new Song(result.link, result.title, result.duration)];
 
-            return videos;
-        } catch (err) {
-            throw err;
-        }
-    }
+		return videos;
+	}
 
-    async getVideo(url) {
-        let data;
+	async getVideo(url) {
+		let data;
 
-        try {
-            data = await ytdl.getBasicInfo(url)
-        } catch (err) {
-            throw err;
-        }
-        
-        let videos = [new Song(data.video_url, data.title, parseTime(data.length_seconds))]
+		data = await ytdl.getBasicInfo(url);
 
-        return videos;
-    }
+		let videos = [new Song(data.video_url, data.title, parseTime(data.length_seconds))];
 
-    async getPlaylist(url) {
-        let data;
+		return videos;
+	}
 
-        try {
-            data = await ytpl(url)
-        } catch (err) {
-            throw err;
-        }
+	async getPlaylist(url) {
+		let data = await ytpl(url);
+		let videos = [];
 
-        let videos = []
+		data.items.forEach(song => {
+			videos.push(new Song(song.url, song.title, song.duration));
+		});
 
-        data.items.forEach(song => {
-            videos.push(new Song(song.url, song.title, song.duration))
-        })
+		return videos;
+	}
+};
 
-        return videos;
-    }
-}
+function parseTime(secs) {
+	let sec_num = parseInt(secs, 10);
+	let hours = Math.floor(sec_num / 3600);
+	let minutes = Math.floor(sec_num / 60) % 60;
+	let seconds = sec_num % 60;
 
-var parseTime = (secs) => {
-    var sec_num = parseInt(secs, 10)
-    var hours   = Math.floor(sec_num / 3600)
-    var minutes = Math.floor(sec_num / 60) % 60
-    var seconds = sec_num % 60
-
-    return [hours,minutes,seconds]
-        .map(v => v < 10 ? "0" + v : v)
-        .filter((v,i) => v !== "00" || i > 0)
-        .join(":")
+	return [hours, minutes, seconds]
+		.map(v => v < 10 ? '0' + v : v)
+		.filter((v, i) => v !== '00' || i > 0)
+		.join(':');
 }

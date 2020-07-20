@@ -17,6 +17,12 @@ module.exports = (/** @type {Discord.Client} */ client, /** @type {Discord.Messa
 	const command = args.shift().toLowerCase();
 
 	const cmd = client.commands.get(command) || client.commands.find(c => c.aliases && c.aliases.includes(command));
+	if(!cmd) return;
+
+	// Check de permissoes
+	if(cmd.ids && !cmd.ids.find(id => id === message.author.id)) return;
+
+	if(cmd.permission && !message.member.hasPermission(cmd.permission)) return;
 
 	if (!cmd) return;
 	cmd.execute(client, message, args);

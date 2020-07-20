@@ -11,16 +11,11 @@ module.exports = {
 		amt = amt > 100 ? 100 : amt;
 
 		let messages = await message.channel.bulkDelete(amt, true);
-		let m = await message.channel.send({
-			'embed': {
-				'color': client.config.color,
-				'fields': [{
-					'name': 'Mensagens deletadas :negative_squared_cross_mark:',
-					'value': `${messages.size - 1} ${amt - 1 === 1 ? 'mensagem removida' : 'mensagens removidas'}`,
-				}],
-			},
-		});
+		let embed = new Discord.MessageEmbed()
+			.setColor(client.config.color)
+			.addField('Mensagens deletadas :negative_squared_cross_mark:', `${messages.size - 1} ${amt - 1 === 1 ? 'mensagem removida' : 'mensagens removidas'}`);
 
+		let m = await message.channel.send(embed);
 		m.delete({ timeout: 2000 });
 	},
 };

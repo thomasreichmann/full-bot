@@ -4,9 +4,8 @@ module.exports = (/** @type {Discord.Client} */ client, /** @type {Discord.Messa
 	if (message.guild == null) return;
 	if (message.author.bot) return;
 
-	// Commando ghost
-	if (message.author.id == '181270590672338944' && client.ghost == true) {
-		message.delete().catch(err => console.log(err));
+	if(message.author.ghost) {
+		message.delete();
 	}
 
 	let prefix = client.config.prefix;

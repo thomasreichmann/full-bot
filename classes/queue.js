@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const ytdl = require('ytdl-core-discord');
+const ytdl = require('ytdl-core');
 
 module.exports = class Queue {
 	constructor(client, guild, connection, channel) {
@@ -62,11 +62,9 @@ module.exports = class Queue {
 			const song = this.songs[0];
 
 			this.dispatcher = this.connection.play(await ytdl(song.url, {
-				filter: 'audioonly',
 				quality: 'lowest',
-			}), {
-				type: 'opus',
-			});
+				format: 'audioonly',
+			}));
 
 			try {
 				if (this.npMessage) await this.npMessage.delete();
@@ -91,6 +89,10 @@ module.exports = class Queue {
 				this.end();
 			}
 		}
+
+		this.dispatcher.on('error', (info) => {
+			console.log(info);
+		});
 
 		this.dispatcher.on('finish', () => {
 			const video = this.songs.shift();

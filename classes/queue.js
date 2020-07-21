@@ -72,9 +72,8 @@ module.exports = class Queue {
 			catch (err) {
 				console.error(`Erro ao deletar npMessage:\n${err}`);
 			}
-			finally {
-				this.npMessage = await this.channel.send(this.np());
-			}
+
+			this.npMessage = await this.channel.send(this.np());
 		}
 		catch (err) {
 			console.error(err);

@@ -29,15 +29,13 @@ module.exports = {
 		let embed = new Discord.MessageEmbed();
 		let data = [''];
 
-		data.push(`**Nome:** ${command.name}\n`);
+		if (command.aliases) data.push(`**Apelidos:** \`${command.aliases.join(', ')}\``);
+		if (command.description) data.push(`**Descricao:** \`${command.description}\``);
+		if (command.usage) data.push(`**Uso:** \`${prefix}${command.usage}\``);
 
-		if (command.aliases) data.push(`**Apelidos:** ${command.aliases.join(', ')}`);
-		if (command.description) data.push(`**Descricao:** ${command.description}`);
-		if (command.usage) data.push(`**Uso:** ${prefix}${command.usage}`);
+		data.push(`**Cooldown:** \`${command.cooldown || 3} segundo(s)\``);
 
-		data.push(`**Cooldown:** ${command.cooldown || 3} segundo(s)`);
-
-		embed.setDescription(data);
+		embed.addField(`**Nome:** \`${command.name}\`\n`, data);
 		message.channel.send(embed);
 	},
 };

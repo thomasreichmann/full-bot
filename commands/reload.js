@@ -6,6 +6,7 @@ module.exports = {
 	description: 'recarrega os comandos do bot.',
 	aliases: ['r'],
 	usage: 'reload',
+	hideHelp: true,
 	execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {
 		fs.readdir('./commands/', (err, files) => {
 			if (err) return console.error(err);

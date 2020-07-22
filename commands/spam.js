@@ -6,6 +6,7 @@ module.exports = {
 	name: 'spam',
 	description: 'Sai e entra repetidamente de um canal de voz.',
 	usage: 'spam [n]',
+	hideHelp: true,
 	execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {
 		let limit = 50;
 		let d = 10;

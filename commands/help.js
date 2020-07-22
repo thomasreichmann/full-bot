@@ -10,7 +10,8 @@ module.exports = {
 		let commands = client.commands;
 
 		if(!args.length) {
-			let c = commands.map(command => `**${command.name}**`).join('\n');
+			// Caso o comando tenha hideHelp, nao mostramos ele no help
+			let c = commands.filter(command => !command.hideHelp).map(command => `\`${command.name}\``).join(', ');
 			let embed = new Discord.MessageEmbed()
 				.addField('Aqui esta uma lista dos meus comandos:', c)
 				.setFooter(`Mande '${prefix}help [comando]' para ver um comando especifico`);

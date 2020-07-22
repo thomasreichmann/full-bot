@@ -4,6 +4,7 @@ module.exports = {
 	name: 'stop',
 	description: 'Finaliza a queue atual do server.',
 	usage: 'stop',
+	aliases: ['parar'],
 	execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {
 		let channel = message.channel;
 

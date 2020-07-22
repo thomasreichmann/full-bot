@@ -4,7 +4,7 @@ const Queue = require('../classes/queue');
 module.exports = {
 	name: 'queue',
 	description: 'Mostra a queue atual do server.',
-	aliases: ['q'],
+	aliases: ['q', 'lista'],
 	usage: 'queue [pagina]',
 	execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {
 		const guild = message.guild;

@@ -7,7 +7,7 @@ const InputHandler = require('../classes/inputHandler');
 module.exports = {
 	name: 'play',
 	description: 'Adiciona uma musica/musicas na queue do servidor.',
-	aliases: ['p'],
+	aliases: ['p', 'tocar'],
 	usage: 'play [spotify/youtube/pesquisa]',
 	cooldown: 0,
 	async execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {

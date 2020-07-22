@@ -5,6 +5,7 @@ module.exports = {
 	name: 'np',
 	description: 'Mostra a musica atual da queue.',
 	usage: 'np',
+	aliases: ['tocando'],
 	execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {
 		let guild = message.guild;
 		/** @type {Queue} */

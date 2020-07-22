@@ -14,6 +14,6 @@ module.exports = {
 
 		if (!queue) return channel.send('O bot nao esta tocando musica nesse server');
 
-		queue.end();
+		queue.destroy();
 	},
 };

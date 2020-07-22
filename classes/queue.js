@@ -20,18 +20,33 @@ module.exports = class Queue {
 		this.npMessage;
 		this.playing = false;
 
+		this.exitTimeout;
+		this.timeout = 300 * 1000;
+
 		this.qloop = false;
 		this.loop = false;
 	}
 
-	end() {
+	destroy() {
 		console.log(`Finalizando queue no servidor: "${this.guild.name}" | "${this.guild.id}"`);
 		this.playing = false;
 		if (this.npMessage) this.npMessage.delete();
 		if (this.dispatcher) this.dispatcher.destroy();
+		if (this.exitTimeout) clearTimeout(this.exitTimeout);
 		this.songs = undefined;
 		this.connection.disconnect();
 		this.client.queues[this.guild.id] = undefined;
+	}
+
+	end() {
+		this.exitTimeout = setTimeout(() => {
+			let embed = new Discord.MessageEmbed()
+				.setColor(this.client.config.color)
+				.setDescription('**Queue inativa** ...\nFinalizando e saindo do canal de voz');
+
+			this.channel.send(embed);
+			this.destroy();
+		}, this.timeout);
 	}
 
 	skip() {
@@ -57,7 +72,10 @@ module.exports = class Queue {
 		this.songs.push(video);
 		console.log(`Video adicionado: "${video.title}"\n Length: "${video.length}"\n URL: "${video.url}"\n Guild: "${this.guild.name}" ID: "${this.guild.id}"\n`);
 
-		if (!this.playing) this.play();
+		if (!this.playing) {
+			this.play();
+			if (this.exitTimeout) clearTimeout(this.exitTimeout);
+		}
 	}
 
 	async play() {

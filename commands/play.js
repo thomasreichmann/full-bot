@@ -15,7 +15,7 @@ module.exports = {
 		let voice = message.member.voice;
 		if (!voice.channel) return channel.send('Voce nao esta conectado em um canal de voz');
 
-		let input = args[0];
+		let input = args.join(' ');
 		if (!input) return channel.send('Especifique uma url para ser tocada');
 
 		let inputHandler = new InputHandler();

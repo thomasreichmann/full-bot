@@ -19,6 +19,9 @@ module.exports = class Queue {
 
 		this.npMessage;
 		this.playing = false;
+
+		this.qloop = false;
+		this.loop = false;
 	}
 
 	end() {
@@ -32,6 +35,7 @@ module.exports = class Queue {
 	}
 
 	skip() {
+		this.loop = false;
 		if (this.dispatcher) return this.dispatcher.end();
 	}
 
@@ -89,15 +93,20 @@ module.exports = class Queue {
 			}
 		}
 
-		this.dispatcher.on('error', (info) => {
-			console.log(info);
-		});
-
 		this.dispatcher.on('finish', () => {
-			const video = this.songs.shift();
+			if(!this.loop) {
+				if(this.qloop) {
+					const video = this.songs.shift();
+					this.songs.push(video);
+					console.log(`Video movido para o fundo da queue: "${video.title}"\n URL: "${video.url}"\n Guild: "${this.guild.name}" ID: "${this.guild.id}"\n`);
+				}
+				else {
+					const video = this.songs.shift();
+					// Console.log longo para debug
+					console.log(`Video removido: "${video.title}"\n URL: "${video.url}"\n Guild: "${this.guild.name}" ID: "${this.guild.id}"\n`);
+				}
+			}
 
-			// Console.log longo para debug
-			console.log(`Video removido: "${video.title}"\n URL: "${video.url}"\n Guild: "${this.guild.name}" ID: "${this.guild.id}"\n`);
 			if (this.songs.length > 0) {
 				this.play();
 			}

@@ -7,6 +7,7 @@ module.exports = {
 	aliases: ['r'],
 	usage: 'reload',
 	hideHelp: true,
+	ids: ['181270590672338944'],
 	execute(/** @type {Discord.Client} */ client, /** @type {Discord.Message} */ message, args) {
 		fs.readdir('./commands/', (err, files) => {
 			if (err) return console.error(err);

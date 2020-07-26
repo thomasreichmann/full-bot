@@ -42,7 +42,7 @@ module.exports = class Queue {
 		this.exitTimeout = setTimeout(() => {
 			let embed = new Discord.MessageEmbed()
 				.setColor(this.client.config.color)
-				.setDescription('**Queue inativa** ...\nFinalizando e saindo do canal de voz');
+				.setDescription('**Queue inativa**\nSaindo do canal de voz');
 
 			this.channel.send(embed);
 			this.destroy();

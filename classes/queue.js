@@ -135,6 +135,13 @@ module.exports = class Queue {
 		})
 			.on('error', (err) => {
 				console.log(`Erro dispatcher error event:\n${err}`);
+				if (this.songs.length > 1) {
+					this.songs.shift();
+					this.play();
+				}
+				else {
+					this.end();
+				}
 			});
 	}
 };

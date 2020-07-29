@@ -83,9 +83,10 @@ module.exports = class Queue {
 			this.playing = true;
 			const song = this.songs[0];
 
-			this.dispatcher = this.connection.play(await ytdl(song.url, {
+			this.dispatcher = this.connection.play(ytdl(song.url, {
 				quality: 'lowest',
 				format: 'audioonly',
+				highWaterMark: 1 << 25,
 			}));
 
 			try {

@@ -23,7 +23,12 @@ module.exports = {
 
 		if (s > queue.songs.length - 1) return message.reply('Essa pagina nao existe na queue');
 
-		for (let i = s; i < queue.songs.length; i++) {
+		let np = queue.songs[s];
+
+		if (page === 1) response += `**Tocando:**\n[\`${np.length}\`](${np.url}) ${np.title}\n\n`;
+		let i = page === 1 ? s + 1 : s;
+
+		for (i; i < queue.songs.length; i++) {
 			const song = queue.songs[i];
 
 			response += `**${i + 1}. ** [\`${song.length}\`](${song.url}) ${song.title} \n`;

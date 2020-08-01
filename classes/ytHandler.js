@@ -20,22 +20,16 @@ module.exports = class ytHandler {
 	}
 
 	async getSearch(query) {
-		let results = await ytsr.search(query);
-		let i = 0;
+		try {
+			let result = await ytsr.searchOne(query);
 
-		let result = results[i];
-		// Caso o primeiro resultado nao for um video, checamos todos os resultados disponiveis ate achar o primeiro video
-		while(result.type != 'video') {
-			i++;
+			let videos = [new Song(result.link, result.title, parseTime(result.duration))];
 
-			if(i > results.length - 1) throw `Erro, nenhum video foi encontrado a partir da query: ${query}`;
-
-			result = results[i];
+			return videos;
 		}
-
-		let videos = [new Song(result.link, result.title, parseTime(result.duration))];
-
-		return videos;
+		catch (err) {
+			throw `Erro getSearch ytHandler:\n${err}`;
+		}
 	}
 
 	async getVideo(url) {

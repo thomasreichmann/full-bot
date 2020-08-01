@@ -1,6 +1,8 @@
 const ytdl = require('ytdl-core-discord');
 const ytpl = require('ytpl');
-const ytsr = require('ytsr');
+
+const ScrapeYt = require('scrape-youtube').Youtube;
+const ytsr = new ScrapeYt();
 
 const Song = require('./song');
 
@@ -18,8 +20,7 @@ module.exports = class ytHandler {
 	}
 
 	async getSearch(query) {
-		let results = (await ytsr(query)).items;
-
+		let results = await ytsr.search(query);
 		let i = 0;
 
 		let result = results[i];
@@ -32,7 +33,7 @@ module.exports = class ytHandler {
 			result = results[i];
 		}
 
-		let videos = [new Song(result.link, result.title, result.duration)];
+		let videos = [new Song(result.link, result.title, parseTime(result.duration))];
 
 		return videos;
 	}

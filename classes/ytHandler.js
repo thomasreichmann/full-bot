@@ -23,6 +23,8 @@ module.exports = class ytHandler {
 		try {
 			let result = await ytsr.searchOne(query);
 
+			if (!result) return;
+
 			let videos = [new Song(result.link, result.title, parseTime(result.duration))];
 
 			return videos;

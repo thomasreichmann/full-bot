@@ -20,12 +20,6 @@
     "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "enmap": "^5.3.1",
-    "ffmpeg-static": "^4.2.5",
-    "scrape-youtube": "^0.2.3",
-    "spotify-web-api-node": "^4.0.0",
-    "ytdl-core": "^3.1.2",
-    "ytdl-core-discord": "^1.2.1",
-    "ytpl": "^0.2.3"
+    "enmap": "^5.3.1"
   }
 }

@@ -6,15 +6,12 @@ if (process.env.NODE_ENV != 'production') {
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const Enmap = require('enmap');
-const Queue = require('./classes/queue');
 
 const fs = require('fs');
 
 client.commands = new Enmap();
 
 client.ghost = false;
-
-client.queues = {};
 
 client.config = require('./config.json');
 if(process.env.NODE_ENV != 'production') {
